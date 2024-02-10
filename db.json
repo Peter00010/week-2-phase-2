@@ -1096,7 +1096,7 @@
             "id": 192,
             "name": "Dls-86",
             "health": 49,
-            "damage": 86,
+            "damage": 86,   
             "armor": 29,
             "bot_class": "Assault",
             "catchphrase": "110100100001001011011010011100000010111100100",

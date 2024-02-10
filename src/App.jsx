@@ -1,14 +1,44 @@
-import { useState } from 'react'
-import './App.css'
+import  { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import './App.css';
+import BotCollection from './BotCollection';
+import YourArmy from './YourArmy';
+import BotSpecs from './BotSpecs';
 
 function App() {
+  const [bots, setBots] = useState([]);
+  const [enlistedBots, setEnlistedBots] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/bots")
+      .then(response => response.json())
+      .then(data => setBots(data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+  const enlistBot = (bot) => {
+    if (!enlistedBots.some(enlistedBot => enlistedBot.id === bot.id)) {
+      setEnlistedBots(prevEnlistedBots => [...prevEnlistedBots, bot]);
+    }
+  };
+
+  const releaseBot = (botId) => {
+    setEnlistedBots(prevEnlistedBots => prevEnlistedBots.filter(bot => bot.id !== botId));
+  };
 
   return (
-    <>
-    <h1>Hello</h1>
-    </>
-    
-  )
+    <Router>
+      <div className="App">
+        <h1>Bot Battlr</h1>
+        <Link to="/your-army">Your Army</Link>
+        <Routes>
+          <Route path="/" element={<BotCollection bots={bots} enlistBot={enlistBot} />} />
+          <Route path="/your-army" element={<YourArmy enlistedBots={enlistedBots} releaseBot={releaseBot} />} />
+          <Route path="/bot-specs/:id" element={<BotSpecs bots={bots} />} />
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
