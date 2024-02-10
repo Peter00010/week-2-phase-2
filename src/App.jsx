@@ -26,13 +26,18 @@ function App() {
     setEnlistedBots(prevEnlistedBots => prevEnlistedBots.filter(bot => bot.id !== botId));
   };
 
+  const handleDischarge = (botId) => {
+    const updatedBots = bots.filter(bot => bot.id !== botId);
+    setBots(updatedBots);
+};
+
   return (
     <Router>
       <div className="App">
         <h1>Bot Battlr</h1>
         <Link to="/your-army">Your Army</Link>
         <Routes>
-          <Route path="/" element={<BotCollection bots={bots} enlistBot={enlistBot} />} />
+          <Route path="/" element={<BotCollection bots={bots} enlistBot={enlistBot} dischargeBot={handleDischarge}/>} />
           <Route path="/your-army" element={<YourArmy enlistedBots={enlistedBots} releaseBot={releaseBot} />} />
           <Route path="/bot-specs/:id" element={<BotSpecs bots={bots} />} />
         </Routes>
