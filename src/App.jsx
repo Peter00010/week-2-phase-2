@@ -29,6 +29,17 @@ function App() {
   const handleDischarge = (botId) => {
     const updatedBots = bots.filter(bot => bot.id !== botId);
     setBots(updatedBots);
+    fetch(`http://localhost:3000/bots/${botId}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete bot from backend');
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting bot from backend:', error);
+    });
 };
 
   return (
